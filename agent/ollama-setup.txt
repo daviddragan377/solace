@@ -1,0 +1,7 @@
+Ollama service integration
+--------------------------
+1. Docker Compose (`docker-compose.yml` and `deploy-compose.yml`) now include a dedicated `ollama/ollama:latest` service. It mounts `./ollama` for persistent models, publishes port 11434, and exposes a healthcheck so LibreChat waits for it.
+2. The API service depends on Ollama, ensuring the chat server only starts after the local model runtime is reachable.
+3. `librechat.example.yaml` contains an `endpoints.custom` entry named `ollama` that points to `http://ollama:11434/v1`; copying this into `librechat.yaml` enables the endpoint with zero additional env vars.
+4. GPU reservations are specified via `deploy.resources.reservations.devices`. Docker Compose ignores this unless Swarm is used; remove or tweak as needed on CPU-only hosts.
+5. Pull models into the mounted `./ollama` directory (inside the running container run `ollama pull llama3.1:8b`). Once downloaded, the UI model picker reflects them via `fetch: true`.

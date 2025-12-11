@@ -301,6 +301,20 @@ endpoints:
       dropParams: ['stop']
       modelDisplayLabel: 'OpenRouter'
 
+    # Ollama (self-hosted) Example
+    - name: 'ollama'
+      apiKey: 'user_provided'
+      baseURL: 'http://ollama:11434/v1'
+      models:
+        default:
+          - 'llama3.1:8b'
+          - 'phi3:mini'
+        fetch: true
+      titleConvo: true
+      titleModel: 'llama3.1:8b'
+      modelDisplayLabel: 'Ollama'
+      dropParams: ['user']
+
     # Helicone Example
     - name: 'Helicone'
       # For `apiKey` and `baseURL`, you can use environment variables that you define.

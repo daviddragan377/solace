@@ -1,0 +1,7 @@
+Model routing quick notes
+-------------------------
+- `api/app/clients/OpenAIClient.js` detects the selected endpoint name; when it equals `ollama` it sets `isOllama` so downstream calls are proxied through the local Ollama adapter.
+- `api/app/clients/OllamaClient.js` wraps the `ollama` npm SDK, defaults to `http://localhost:11434`, fetches models via `/api/tags`, and streams tokens back through LibreChat's progress handler.
+- `api/server/services/ModelService.js` looks for endpoint names beginning with `ollama` and uses `OllamaClient.fetchModels()`; otherwise it falls back to OpenAI-compatible `/models` calls.
+- `config/librechat.yaml` (see `librechat.example.yaml`) lets you define an `endpoints.custom` entry named `ollama`, set `apiKey: 'user_provided'`, and point `baseURL` at your local server (e.g., `http://host.docker.internal:11434/v1`).
+- `docker-compose.yml` / `deploy-compose.yml` now ship with a first-class `ollama` service so the stack boots Ollama for you; models persist under `./ollama` and the sample config targets `http://ollama:11434/v1` automatically.

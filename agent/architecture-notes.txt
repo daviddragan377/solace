@@ -1,0 +1,8 @@
+LibreChat repo structure (initial pass)
+-------------------------------------
+- Root npm workspace that orchestrates server (`api`), Vite/React client (`client`), and shared packages under `packages/*`.
+- Additional configuration utilities live under `config/` plus e2e Playwright suite in `e2e/` and Helm/Docker deployment assets at root.
+- Server side: `api/server` (Express + Mongo), `api/models`, `api/config`.
+- Frontend: `client/src` (React + Vite), plus supporting configs (tailwind, postcss, vite, tsconfig).
+- Shared logic packaged (data-provider, data-schemas, api/client packages) enabling modular reuse between api/client.
+- Extra tooling: `utils/`, `redis-config/`, `helm/`, `rag.yml` for optional RAG services.

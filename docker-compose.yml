@@ -9,6 +9,7 @@ services:
     depends_on:
       - mongodb
       - rag_api
+      - ollama
     image: ghcr.io/danny-avila/librechat-dev:latest
     restart: always
     user: "${UID}:${GID}"
@@ -67,6 +68,30 @@ services:
       - vectordb
     env_file:
       - .env
+
+  ollama:
+    container_name: librechat-ollama
+    image: ollama/ollama:latest
+    restart: always
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+    volumes:
+      - ./ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              driver: nvidia
+      restart_policy:
+        condition: on-failure
 
 volumes:
   pgdata2:

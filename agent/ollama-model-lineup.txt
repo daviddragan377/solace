@@ -1,0 +1,32 @@
+Ollama model lineup (Dec 2025)
+---------------------------------
+1. llama3.1:70b-instruct-q4_K_M
+   - Role: flagship "thinking" model with best reasoning depth while staying within ~48GB GPU (quantized) or 32GB CPU + swap.
+   - Use: deep research, long-form planning, auto web search preset `deep-researcher`.
+2. deepseek-r1:32b
+   - Role: chain-of-thought powerhouse; great for analytical reports and math-heavy breakdowns.
+   - Use: select `think-tank` preset when you want explicit reasoning traces.
+3. qwen2.5:32b
+   - Role: balanced generalist with strong tool-use; tuned for research plus coding.
+   - Use: `research-web` preset with LibreChat web search for live-source answers.
+4. llama3.1:8b-instruct-q6_K
+   - Role: responsive daily-driver for drafting and quick replies under CPU-only conditions.
+   - Use: `fast-desk` preset.
+5. mistral-nemo:12b-instruct
+   - Role: mid-tier assistant optimized for factual QA + multilingual chats; cheaper to run than 32B models.
+6. nomic-embed-text:latest & snowflake-arctic-embed:335m
+   - Role: dual embedding models for semantic search/RAG pipelines; load whichever fits your latency vs accuracy needs.
+7. whisper:medium (standalone script)
+   - Role: offline voice dictation via `scripts/ollama/transcribe.sh`.
+
+Hardware envelope
+------------------
+- 70B quantized model benefits from a 48GB GPU; on CPU, expect ~30-40 tok/s with AVX512 and >64GB RAM.
+- 32B models run comfortably on 24GB GPU or 64GB RAM CPU hosts.
+- Embedding + Whisper models are lightweight (<10GB RAM) and can coexist with the chat models.
+
+Operational notes
+-----------------
+- Run `scripts/ollama/pull-models.sh` inside the `LibreChat-Ollama` container (or on the host) after bringing the stack up.
+- For voice notes, record audio (wav/mp3) and call `transcribe.sh <file>`; paste the transcript back into LibreChat to continue the conversation using any preset.
+- To enable live web research, populate `SERPER_API_KEY`, `FIRECRAWL_API_KEY`, and `JINA_API_KEY` in `.env`; the presets already flip on web search when keys are present.
